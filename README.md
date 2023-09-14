@@ -1,2 +1,2 @@
 # html
-Websites with some Javascript.
+Websites with some (Java)script(s).
