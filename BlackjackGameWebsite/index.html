@@ -94,7 +94,7 @@
             jakajandialog.innerText=("...")
         }
 
-        //Kun pelaaja painaa STAY nappia
+        //If the player presses STAND
         function pysyminen(){
             //jakaja voi vielä nostaa kortteja
             while(pelaajanpisteet >= jakajanpisteet && jakajanpisteet < 21){
@@ -105,25 +105,25 @@
         }
 
         
-        //NAPPIEN LUONTI///////////////////////////////////
+        //Creation of the buttons///////////////////////////////////
         
-        //uudet kortit pelaajille jako funktiolla
+        //give the player new cards with this button
         const hitme = document.getElementById("hitme");
         hitme.addEventListener("click",jako);
 
-        //stay nappula
+        //stay button
         const stay = document.getElementById("stay");
         stay.addEventListener("click",pysyminen);
         stay.disabled = true;
 
-        //pelin uudelleenkäynnistysnappi
+        //reset the game with this button
         const restartti = document.getElementById("restartti");
         restartti.addEventListener("click",nollaus);
         restartti.disabled = true;
 
 
-        //funktio vertailee pelaajien pisteitä ja laskee voittajan
-        //ventin voittajan ratkaisu logiikka
+        //this function compares the points and declares the winner
+        //according to "logic"
         function tarkistus(pelaajanpisteet, jakajanpisteet){
             console.log(pelaajanpisteet,jakajanpisteet);
             if (pelaajanpisteet > jakajanpisteet && pelaajanpisteet < 22){
@@ -147,14 +147,14 @@
                 pelaajandialog.innerText=('"..."');
                 jakajandialog.innerText=('"Nice try, pal"')
             }
-            //ohjelman loppu ja uudelleenkäynnistys:
-            //aktivoi restart napin ja deaktivoi muut
+            //the end and restarting point of the script:
+            //enables the restart button and disables the other two
             restartti.disabled = false;
             hitme.disabled=true;
             stay.disabled=true;
             }
 
-        //jos pelaaja pysyy korteissaan, voi kone vielä nostaa kortteja tässä
+        //IF the player stays, the bot-whatever can still pick another card
         function jakajanviimeinen(){
             jakajankäsi.push(sekoitettupakka[0]);
             pelaajanviimeisin.innerText+=("-");
@@ -164,45 +164,44 @@
             sekoitettupakka=sekoitettupakka.slice(1,-1);
         }
 
-        //korttien jako funktio
+        //function to deal the cards
         function jako(){
             liikkeet.innerText=("...")
             hitme.innerText=("[ hit ]")
             stay.disabled = false;
 
-            //tässä kohtaa molempien arrayhin uudet kortit:
+            //give new cards to each array:
 
-            //kortti pelaajan pakkaan = .push()
+            //push new card into the player's deck = .push()
             pelaajankäsi.push(sekoitettupakka[0]);
-            //pelaajan nostama kortti näkyviin
+            //display the last card, which was picked
             pelaajanviimeisin.innerText+=(sekoitettupakka[0][0]);
-            //pelaajan nostama kortti lisätään pelaajan pisteisiin
+            //last cards value is added to the total
             pelaajanpisteet += Number(sekoitettupakka[0][1]);
-             //"nostettu" kortti pois pakasta .slicellä()
+             //removing the picked card from the main deck, with slice()
             sekoitettupakka= sekoitettupakka.slice(1,-1);
 
 
-            //kortti jakajan pakkaa
-            // 15 pisteen raja, jotta peli vaikeutuisi 
+            //dealer's deck
+            //if the dealer's total is less than 15, they always hit
             if (jakajanpisteet < 15){
             
-            //kortti nostetaan samalla tavalla kuin ylempänä
+            //same card selection method as used above with the player's deck
             jakajankäsi.push(sekoitettupakka[0]);
             jakajanviimeisin.innerText+=(sekoitettupakka[0][0]);
             jakajanpisteet += Number(sekoitettupakka[0][1]);
             sekoitettupakka=sekoitettupakka.slice(1,-1);
-            } else{ //else tässä kohtaa siksi että kone ei nosta korttia jos >15 pistettä
-                //viimeisin kortti nosto merkitään - symbolilla
+            } else{ //no new card, if the dealer's total if above 15 points
+                //in this case the lates card is shown as a "-" symbol
                 jakajanviimeisin.innerText+=("-");
                 //console.log(jakajanpisteet);
             }
-            //console.log(jakajanpisteet,pelaajanpisteet);
 
-            //pisteiden päivitys näkyville
+            //updating the points
             pelaajanpojot.innerText=(`Player: ${pelaajanpisteet}`);
             jakajanpojot.innerText=(`Dealer: ${jakajanpisteet}`);
 
-            //jos jommallakummalla menee yli 21 niin automaattisesti tarkistukseen tarkistus() funktiolla
+            //if either the dealer or the player scores over 21 => instant conclusion to game triggered
             if(pelaajanpisteet > 21 || jakajanpisteet > 21){
                 console.log("!!!")
                 tarkistus(pelaajanpisteet,jakajanpisteet);
