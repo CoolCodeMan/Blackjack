@@ -126,6 +126,7 @@
 
         //this function compares the points and declares the winner
         //according to "logic"
+        //There's a logic error that sometimes states both go over with the same total, even if the dealer and player don't have the same total. Should be fixable, some day.
         function tarkistus(pelaajanpisteet, jakajanpisteet){
             console.log(pelaajanpisteet,jakajanpisteet);
             if (pelaajanpisteet > jakajanpisteet && pelaajanpisteet < 22){
