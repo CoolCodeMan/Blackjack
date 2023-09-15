@@ -7,49 +7,49 @@
     <body>
 
         
-        <!--otsikko--------------------------------------------------------------->
+        <!--title--------------------------------------------------------------->
         <h1>🃏&#128176; Old man vs Casino King: BLACKJACK ⛰️ &#128184;</h1><br><br>
-        <!--jakajan tiedot------------------------------------------------------------------------------------------>
+        <!--dealer info------------------------------------------------------------------------------------------>
         <p style="color:green;" id="jakajandialog">...</p>
         <h1><p>🤵</p></h1>
         <p id="jakajanpojot">Dealer: 0</p>
         <p id="jakajanviimeisin">></p>
-        <!--"liikkeet"---------------------------------------------------------------------------------------------------->
+        <!--"moves"---------------------------------------------------------------------------------------------------->
         <p>--------------------------------------------------------------------------------------------------------------------</p>
         <p>&#x1F0A0;&#x1F0A0;</p>
         <h1><b><p style="color: burlywood;" id="liikkeet">...</p></b></h1>
         <p>--------------------------------------------------------------------------------------------------------------------</p>
-        <!--pelaajan tiedot----------------------------------------------------------------------------------------------->
+        <!--player info----------------------------------------------------------------------------------------------->
         <p style="color:green;" id="pelaajandialog">...</p>
         <h1>&#128116;</h1>
         <p style="color:red;" id="pelaajanpojot">Player: 0</p>
         <p style="color:red;" id="pelaajanviimeisin">></p>
         <p>/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////</p>
 
-        <!--toimintonapit-->
+        <!--buttons to do things with-->
         <button id="hitme">[ hit ]</button><br><br>
         <button id="stay">[ stand ]</button><br><br>
         <button id="restartti">[ restart ]</button>
     
 
-        <!--Javascript osuus-->
+        <!--Script portion-->
 
         <script>
-        //ELEMENTIT/////////////////////////////////////////////////
-        //pelaajan elementit
+        //Elements/////////////////////////////////////////////////
+        //player
         const pelaajanpojot = document.getElementById("pelaajanpojot");
         const pelaajanviimeisin = document.getElementById("pelaajanviimeisin");
         const pelaajandialog = document.getElementById("pelaajandialog");
-        //jakajan elementit
+        //dealer
         const jakajanpojot =document.getElementById("jakajanpojot");
         const jakajanviimeisin = document.getElementById("jakajanviimeisin");
         const jakajandialog = document.getElementById("jakajandialog");
         //
         const liikkeet = document.getElementById("liikkeet");
 
-        //KORTTIPAKAN LUONTI///////////////////////////////////////
+        //Generating the stack of cards///////////////////////////////////////
 
-        //Korttipakan pohjana käytettävä lista
+        //List to be used a the basis
         let korttipakka = [["♠ ässä" ,1 ,14],["♠ 2" ,2],["♠ 3" ,3],["♠ 4" ,4],["♠ 5" ,5],["♠ 6" ,6],["♠ 7" ,7],
             ["♠ 8" ,8],["♠ 9" ,9],["♠ 10" ,10],["♠ 11" ,11],["♠ 12" ,12],["♠ 13" ,13],["♥ ässä" ,1 ,14],["♥ 2" ,2],
             ["♥ 3" ,3],["♥ 4" ,4],["♥ 5" ,5],["♥ 6" ,6],["♥ 7" ,7],["♥ 8" ,8],["♥ 9" ,9],["♥ 10", 10],
@@ -58,7 +58,7 @@
             ["♦ 13" ,13],["♣ ässä" ,1 ,14],["♣ 2" ,2],["♣ 3" ,3],["♣ 4" ,4],["♣ 5" ,5],["♣ 6" ,6],["♣ 7" ,7],
             ["♣ 8" ,8],["♣ 9" ,9],["♣ 10" ,10],["♣ 11" ,11],["♣ 12" ,12],["♣ 13" ,13]];
 
-        //Tämä sekoittaa korttipakka listan (Fisher-Yates)
+        //Shuffle the list (Fisher-Yates)
         const shuffle = (array) => { 
         for (let i = array.length - 1; i > 0; i--) { 
             const j = Math.floor(Math.random() * (i + 1)); 
@@ -67,16 +67,16 @@
         return array; 
         }; 
         
-        //Sekoitettu korttipakka tallenetaan sekoitettupakka muuttujaan
+        //Save the shuffled list here
         let sekoitettupakka = shuffle(korttipakka);
 
-        //Näihin muuttujiin tallennetaan pelaajien käsissä olevat kortit ja niiden summa
+        //Save the dealer and players current hands and total point amounts here
         let pelaajankäsi = [];
         let pelaajanpisteet = 0;
         let jakajankäsi = [];
         let jakajanpisteet = 0;
        
-        //tämä funktio "nollaa" ohjelman arvot
+        //resets the whole game/thing 
         function nollaus(){
             pelaajanviimeisin.innerText=(">");
             jakajanviimeisin.innerText=(">");
