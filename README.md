@@ -1,4 +1,4 @@
 # Web-stuff
-Websites with some (Java)script(s).
+HTML websites with some (Java)script(s).
 
 ![alt text](computer.png)
