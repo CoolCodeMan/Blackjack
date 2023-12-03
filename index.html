@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>&#128116; Blacjack</title>
+    </head>
+
+    <body>
+        <!--using center because too lazy to use CSS at the moment-->
+        <center>
+        
+        <!--title--------------------------------------------------------------->
+        <h1>🃏&#128176; Old man vs Casino King: BLACKJACK ⛰️ &#128184;</h1><br><br>
+        <!--dealer info------------------------------------------------------------------------------------------>
+        <p style="color:green;" id="jakajandialog">...</p>
+        <h1><p>🤵</p></h1>
+        <p id="jakajanpojot">Dealer: 0</p>
+        <p id="jakajanviimeisin">></p>
+        <!--"moves"---------------------------------------------------------------------------------------------------->
+        <p>--------------------------------------------------------------------------------------------------------------------</p>
+        <p>&#x1F0A0;&#x1F0A0;</p>
+        <h1><b><p style="color: burlywood;" id="liikkeet">...</p></b></h1>
+        <p>--------------------------------------------------------------------------------------------------------------------</p>
+        <!--player info----------------------------------------------------------------------------------------------->
+        <p style="color:green;" id="pelaajandialog">...</p>
+        <h1>&#128116;</h1>
+        <p style="color:red;" id="pelaajanpojot">Player: 0</p>
+        <p style="color:red;" id="pelaajanviimeisin">></p>
+        <p>/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////</p>
+
+        <!--buttons to do things with-->
+        <button id="hitme">[ hit ]</button><br><br>
+        <button id="stay">[ stand ]</button><br><br>
+        <button id="restartti">[ restart ]</button>
+
+        </center>
+
+        <!--Script portion-->
+
+        <script>
+        //Elements/////////////////////////////////////////////////
+        //player
+        const pelaajanpojot = document.getElementById("pelaajanpojot");
+        const pelaajanviimeisin = document.getElementById("pelaajanviimeisin");
+        const pelaajandialog = document.getElementById("pelaajandialog");
+        //dealer
+        const jakajanpojot =document.getElementById("jakajanpojot");
+        const jakajanviimeisin = document.getElementById("jakajanviimeisin");
+        const jakajandialog = document.getElementById("jakajandialog");
+        //
+        const liikkeet = document.getElementById("liikkeet");
+
+        //Generating the stack of cards///////////////////////////////////////
+
+        //List to be used a the basis
+        let korttipakka = [["♠ ässä" ,1 ,14],["♠ 2" ,2],["♠ 3" ,3],["♠ 4" ,4],["♠ 5" ,5],["♠ 6" ,6],["♠ 7" ,7],
+            ["♠ 8" ,8],["♠ 9" ,9],["♠ 10" ,10],["♠ 11" ,11],["♠ 12" ,12],["♠ 13" ,13],["♥ ässä" ,1 ,14],["♥ 2" ,2],
+            ["♥ 3" ,3],["♥ 4" ,4],["♥ 5" ,5],["♥ 6" ,6],["♥ 7" ,7],["♥ 8" ,8],["♥ 9" ,9],["♥ 10", 10],
+            ["♥ 11" ,11],["♥ 12" ,12],["♥ 13" ,13],["♦ ässä", 1 ,14],["♦ 2" ,2],["♦ 3" ,3],["♦ 4" ,4],
+            ["♦ 5" ,5],["♦ 6" ,6],["♦ 7" ,7],["♦ 8" ,8],["♦ 9" ,9],["♦ 10" ,10],["♦ 11" ,11],["♦ 12" ,12],
+            ["♦ 13" ,13],["♣ ässä" ,1 ,14],["♣ 2" ,2],["♣ 3" ,3],["♣ 4" ,4],["♣ 5" ,5],["♣ 6" ,6],["♣ 7" ,7],
+            ["♣ 8" ,8],["♣ 9" ,9],["♣ 10" ,10],["♣ 11" ,11],["♣ 12" ,12],["♣ 13" ,13]];
+
+        //Shuffle the list (Fisher-Yates)
+        const shuffle = (array) => { 
+        for (let i = array.length - 1; i > 0; i--) { 
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [array[i], array[j]] = [array[j], array[i]]; 
+        } 
+        return array; 
+        }; 
+        
+        //Save the shuffled list here
+        let sekoitettupakka = shuffle(korttipakka);
+
+        //Save the dealer and players current hands and total point amounts here
+        let pelaajankäsi = [];
+        let pelaajanpisteet = 0;
+        let jakajankäsi = [];
+        let jakajanpisteet = 0;
+       
+        //resets the whole game/thing 
+        function nollaus(){
+            pelaajanviimeisin.innerText=(">");
+            jakajanviimeisin.innerText=(">");
+            pelaajanpisteet = 0;
+            jakajanpisteet = 0;
+            sekoitettupakka = shuffle(korttipakka);
+            jakajanpojot.innerText=("Dealer:");
+            pelaajanpojot.innerText=("Player:");
+            stay.disabled = true;
+            hitme.innerText = ("new round");
+            restartti.disabled = true;
+            hitme.disabled = false;
+            liikkeet.innerText=("...")
+            pelaajandialog.innerText=("...")
+            jakajandialog.innerText=("...")
+        }
+
+        //If the player presses STAND
+        function pysyminen(){
+            //jakaja voi vielä nostaa kortteja
+            while(pelaajanpisteet >= jakajanpisteet && jakajanpisteet < 21){
+                jakajanviimeinen(jakajanpisteet);
+            }
+            //siirrytään tarkistusfunktioon
+            tarkistus(pelaajanpisteet,jakajanpisteet);
+        }
+
+        
+        //Creation of the buttons///////////////////////////////////
+        
+        //give the player new cards with this button
+        const hitme = document.getElementById("hitme");
+        hitme.addEventListener("click",jako);
+
+        //stay button
+        const stay = document.getElementById("stay");
+        stay.addEventListener("click",pysyminen);
+        stay.disabled = true;
+
+        //reset the game with this button
+        const restartti = document.getElementById("restartti");
+        restartti.addEventListener("click",nollaus);
+        restartti.disabled = true;
+
+
+        //this function compares the points and declares the winner
+        //according to "logic"
+        //There's a logic error that sometimes states both go over with the same total, even if the dealer and player don't have the same total. Should be fixable, some day.
+        function tarkistus(pelaajanpisteet, jakajanpisteet){
+            console.log(pelaajanpisteet,jakajanpisteet);
+            if (pelaajanpisteet > jakajanpisteet && pelaajanpisteet < 22){
+                liikkeet.innerText=(`(${pelaajanpisteet}) YOU WIN!`);
+                pelaajandialog.innerText=('"Wohoo!"');
+                jakajandialog.innerText=('"Grrrrrrrrrr"');
+            } else if(jakajanpisteet > pelaajanpisteet && jakajanpisteet < 22){
+                liikkeet.innerText=(`(${jakajanpisteet}) HOUSE WINS!`);
+                pelaajandialog.innerText=('"NOOOO!"');
+                jakajandialog.innerText=('"HAHAHAHAHAHAHAHAHAAH"');
+            } else if(jakajanpisteet < 22 && pelaajanpisteet > 21){
+                liikkeet.innerText=(`(${jakajanpisteet}) HOUSE WINS! (you went bust: ${pelaajanpisteet})`);
+                pelaajandialog.innerText=('"NOOOO!"');
+                jakajandialog.innerText=('"HAHAHAAHAHA"');
+            } else if (pelaajanpisteet < 22 && jakajanpisteet > 21){
+                liikkeet.innerText=(`(${pelaajanpisteet}) PLAYER WINS! (house went bust: ${jakajanpisteet})`);
+                pelaajandialog.innerText=('"YES!"');
+                jakajandialog.innerText=('"Grrrrrrrrrr"');
+            } else{
+                liikkeet.innerText=(`BOTH WITH ${pelaajanpisteet} = DRAW!`)
+                pelaajandialog.innerText=('"..."');
+                jakajandialog.innerText=('"Nice try, pal"')
+            }
+            //the end and restarting point of the script:
+            //enables the restart button and disables the other two
+            restartti.disabled = false;
+            hitme.disabled=true;
+            stay.disabled=true;
+            }
+
+        //IF the player stays, the bot-whatever can still pick another card
+        function jakajanviimeinen(){
+            jakajankäsi.push(sekoitettupakka[0]);
+            pelaajanviimeisin.innerText+=("-");
+            jakajanviimeisin.innerText+=(sekoitettupakka[0][0]);
+            jakajanpisteet += Number(sekoitettupakka[0][1]);
+            jakajanpojot.innerText=(`dealer: ${jakajanpisteet}`);
+            sekoitettupakka=sekoitettupakka.slice(1,-1);
+        }
+
+        //function to deal the cards
+        function jako(){
+            liikkeet.innerText=("...")
+            hitme.innerText=("[ hit ]")
+            stay.disabled = false;
+
+            //give new cards to each array:
+
+            //push new card into the player's deck = .push()
+            pelaajankäsi.push(sekoitettupakka[0]);
+            //display the last card, which was picked
+            pelaajanviimeisin.innerText+=(sekoitettupakka[0][0]);
+            //last cards value is added to the total
+            pelaajanpisteet += Number(sekoitettupakka[0][1]);
+             //removing the picked card from the main deck, with slice()
+            sekoitettupakka= sekoitettupakka.slice(1,-1);
+
+
+            //dealer's deck
+            //if the dealer's total is less than 15, they always hit
+            if (jakajanpisteet < 15){
+            
+            //same card selection method as used above with the player's deck
+            jakajankäsi.push(sekoitettupakka[0]);
+            jakajanviimeisin.innerText+=(sekoitettupakka[0][0]);
+            jakajanpisteet += Number(sekoitettupakka[0][1]);
+            sekoitettupakka=sekoitettupakka.slice(1,-1);
+            } else{ //no new card, if the dealer's total if above 15 points
+                //in this case the lates card is shown as a "-" symbol
+                jakajanviimeisin.innerText+=("-");
+                //console.log(jakajanpisteet);
+            }
+
+            //updating the points
+            pelaajanpojot.innerText=(`Player: ${pelaajanpisteet}`);
+            jakajanpojot.innerText=(`Dealer: ${jakajanpisteet}`);
+
+            //if either the dealer or the player scores over 21 => instant conclusion to game triggered
+            if(pelaajanpisteet > 21 || jakajanpisteet > 21){
+                console.log("!!!")
+                tarkistus(pelaajanpisteet,jakajanpisteet);
+            }
+            
+
+        }
+        </script>
+    </body>
+</html>
