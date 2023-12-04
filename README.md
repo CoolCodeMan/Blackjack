@@ -1,4 +1,4 @@
-# BlackjackTest
+# Blackjack
 
 A simple browser blackjack game.
 
