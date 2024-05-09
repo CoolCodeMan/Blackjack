@@ -7,13 +7,13 @@
 }
 
 .buttonHit{
-  background-color: "green";
+  background-color: green;
   font-size:30px;
    
 }
 
 .buttonStand{
-  background-color: "red";
-  font-size:30px;
+  background-color: red;
+  font-size:33px;
    
 }
