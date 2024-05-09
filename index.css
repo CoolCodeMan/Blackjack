@@ -3,17 +3,17 @@
   position: absolute;
   top: 2%;
   font-size:21px;
-  left:18%;
+  left:5%;
 }
 
 .buttonHit{
-  color: "green";
-  font-size:25px;
+  background-color: "green";
+  font-size:30px;
    
 }
 
 .buttonStand{
-  color: "red";
-  font-size:25px;
+  background-color: "red";
+  font-size:30px;
    
 }
