@@ -6,8 +6,14 @@
   left:18%;
 }
 
-#hitButton{
+.buttonHit{
   color: "green";
-  
-  
+  font-size:25px;
+   
+}
+
+.buttonStand{
+  color: "red";
+  font-size:25px;
+   
 }
