@@ -1,5 +1,4 @@
 # Blackjack
 
-A simple browser blackjack game.
+A Javascript browser blackjack game.
 
-https://coolcodeman.github.io/Blackjack/
