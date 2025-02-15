@@ -6,7 +6,6 @@
     </head>
 
     <body>
-        <!--using center because too lazy to use CSS at the moment-->
 
         <div id="gameBox">
         <!--title--------------------------------------------------------------->
@@ -16,24 +15,20 @@
 
         <p id="jakajanpojot">Dealer: 0</p>
         <p id="jakajanviimeisin">></p>
-        <!--"moves"---------------------------------------------------------------------------------------------------->
         <p>--------------------------------------------------------------------------------------------------------------------</p>
         <h1><b><p style="color: burlywood;" id="liikkeet">...</p></b></h1>
         <p>--------------------------------------------------------------------------------------------------------------------</p>
-        <!--player info----------------------------------------------------------------------------------------------->
         
         <p>&#128116;</p><p style="color:green;" id="pelaajandialog">...</p>
         <p style="color:red;" id="pelaajanpojot">Player: 0</p>
         <p style="color:red;" id="pelaajanviimeisin">></p>
         <p>///////////////////////////////////////////////////////////</p>
 
-        <!--buttons to do things with-->
         <button class="buttonHit" id="hitme">[ hit ]</button>&emsp;&emsp;&emsp;&emsp;<button class="buttonStand" id="stay">[ stand ]</button>
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         <button id="restartti">[ restart ]</button>
         </div>
 
-        <!--Script portion-->
 
         <script>
         //Elements/////////////////////////////////////////////////
@@ -50,7 +45,7 @@
 
         //Generating the stack of cards///////////////////////////////////////
 
-        //List to be used a the basis
+        //List to be used as the basis
         let korttipakka = [["♠ ace" ,1 ,14],["♠ 2" ,2],["♠ 3" ,3],["♠ 4" ,4],["♠ 5" ,5],["♠ 6" ,6],["♠ 7" ,7],
             ["♠ 8" ,8],["♠ 9" ,9],["♠ 10" ,10],["♠ 11" ,11],["♠ 12" ,12],["♠ 13" ,13],["♥ ace" ,1 ,14],["♥ 2" ,2],
             ["♥ 3" ,3],["♥ 4" ,4],["♥ 5" ,5],["♥ 6" ,6],["♥ 7" ,7],["♥ 8" ,8],["♥ 9" ,9],["♥ 10", 10],
@@ -77,7 +72,7 @@
         let jakajankäsi = [];
         let jakajanpisteet = 0;
        
-        //resets the whole game/thing 
+        //resets the game loop
         function nollaus(){
             pelaajanviimeisin.innerText=(">");
             jakajanviimeisin.innerText=(">");
@@ -101,7 +96,6 @@
             while(pelaajanpisteet >= jakajanpisteet && jakajanpisteet < 21){
                 jakajanviimeinen(jakajanpisteet);
             }
-            //siirrytään tarkistusfunktioon
             tarkistus(pelaajanpisteet,jakajanpisteet);
         }
 
@@ -125,7 +119,6 @@
 
         //this function compares the points and declares the winner
         //according to "logic"
-        //There's a logic error that sometimes states both go over with the same total, even if the dealer and player don't have the same total. Should be fixable, some day.
         function tarkistus(pelaajanpisteet, jakajanpisteet){
             console.log(pelaajanpisteet,jakajanpisteet);
             if (pelaajanpisteet > jakajanpisteet && pelaajanpisteet < 22){
